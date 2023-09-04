@@ -1,21 +1,21 @@
 import { useState } from "react";
 import Pagina from "../templates/Pagina";
-import FormCadClientes from "./formularios/FormCadCliente";
+import FormCadFornecedor from "./formularios/FormCadFornecedor";
 
 
 import TabelaClientes from "./tabelas/TabelaClientes";
 
 
-export default function TelaCadastroCliente(props) {
-    const [exibirformulario, setExibirFormulario] = useState(false);
+export default function TelaCadastroFornecedor(props) {
+    const [exibirformulario, setExibirFormulario] = useState(true);
     return (
 
         <Pagina>
             {
-
                 //dinamica em que o usuario ira alternar entre o formulario e a visualização do registros ja cadastrados
-                exibirformulario ? <FormCadClientes exibirformulario={setExibirFormulario}/> : <TabelaClientes exibirformulario={setExibirFormulario}/>
+                exibirformulario ? <FormCadFornecedor /> : <TabelaClientes />
             }
         </Pagina>
+
     )
 }

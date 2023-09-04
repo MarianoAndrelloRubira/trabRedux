@@ -137,7 +137,9 @@ export default function FormCadClientes(props) {
                         <Button type="submit" variant={"primary"}>Cadastrar</Button>
                     </Col>
                     <Col md={6} offset={5}>
-                        <Button type="button" variant={"secondary"}>Voltar</Button>
+                        <Button type="button" variant={"secondary"} onClick={()=>{
+                            props.exibirformulario(false)
+                            }}>Voltar</Button>
                     </Col>
                 </Row>
             </Form>
