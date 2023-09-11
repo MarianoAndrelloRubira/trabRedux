@@ -1,9 +1,49 @@
+import { useState } from "react";
 import { Form, Container, Row, Col, Button,FloatingLabel } from "react-bootstrap";
 
 export default function FormCadClientes(props) {
+    //os atributos deste objeto devem estar associados aos imputs do formulario
+const estadoInicialCliente = {
+        cpf:'',
+        nome:'',
+        endereco:'',
+        numero:'',
+        bairro:'',
+        cidade:'',
+        UF:'SP',
+        cep:''
+}
+
+    const [cliente,setCliente] = useState(estadoInicialCliente);
+
+    const [formValidado, setFormValidado] = useState(false);
+
+    function manipularMudancas(e){
+        const componente = e.currentTarget;
+        setCliente({...cliente,[componente.name]:componente.value});
+    }
+
+    function manipularSubmissao(e){
+        const form=e.currentTarget;
+        if(form.checkValidity()){
+           // todos os campos preenchidos
+           // mandar os dados para o backend
+           setCliente(estadoInicialCliente);
+           setFormValidado(false);
+        }
+        else{
+            setFormValidado(true);
+        }
+
+        
+
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
     return (
         <Container>
-            <Form>
+            <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
                 <Row>
                     <Col>
                         <Form.Group>
@@ -12,7 +52,7 @@ export default function FormCadClientes(props) {
                                 label="CPF"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="000.000.000-00" id="cpf" name="cpf" required />
+                                <Form.Control type="text" placeholder="000.000.000-00" id="cpf" name="cpf" required value={cliente.cpf} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CPF</Form.Control.Feedback>
                         </Form.Group>
@@ -25,7 +65,7 @@ export default function FormCadClientes(props) {
                             label="Nome completo"
                             className="mb-3"
                         >
-                            <Form.Control type="text" placeholder="Informe o nome completo" id="nome" name="nome" required />
+                            <Form.Control type="text" placeholder="Informe o nome completo" id="nome" name="nome" required value={cliente.nome} onChange={manipularMudancas}/>
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">Informe o nome completo</Form.Control.Feedback>
                     </Form.Group>
@@ -39,7 +79,7 @@ export default function FormCadClientes(props) {
                                 label="Endereço"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Avenida/Rua/Alameda/Viela" id="endereco" name="endereco" required />
+                                <Form.Control type="text" placeholder="Avenida/Rua/Alameda/Viela" id="endereco" name="endereco" required value={cliente.endereco} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o endereço</Form.Control.Feedback>
                         </Form.Group>
@@ -51,7 +91,7 @@ export default function FormCadClientes(props) {
                                 label="Numero"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="N" id="numero" name="numero" required />
+                                <Form.Control type="text" placeholder="N" id="numero" name="numero" required value={cliente.numero} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o numero</Form.Control.Feedback>
                         </Form.Group>
@@ -66,7 +106,7 @@ export default function FormCadClientes(props) {
                                 label="Bairro"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Bairro" id="bairro" name="bairro" required/>
+                                <Form.Control type="text" placeholder="Bairro" id="bairro" name="bairro" required value={cliente.bairro} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o Bairro</Form.Control.Feedback>
                         </Form.Group>
@@ -78,14 +118,15 @@ export default function FormCadClientes(props) {
                                 label="Cidade"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Cidade" id="cidade" name="cidade" />
+                                <Form.Control type="text" placeholder="Cidade" id="cidade" name="cidade" required value={cliente.cidade} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe a Cidade</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col md={3}>
                         <FloatingLabel controlId="floatingSelect" label="UF:">
-                            <Form.Select aria-label="Unidades federativas">
+                            <Form.Select aria-label="Unidades federativas" id="UF" name="UF" value={cliente.UF} onChange={manipularMudancas}>
+                                <option value="SP" selected>São Paulo</option>
                                 <option value="AC">Acre</option>
                                 <option value="AL">Alagoas</option>
                                 <option value="AP">Amapá</option>
@@ -110,7 +151,6 @@ export default function FormCadClientes(props) {
                                 <option value="RO">Rondônia</option>
                                 <option value="RR">Roraima</option>
                                 <option value="SC">Santa Catarina</option>
-                                <option value="SP" selected>São Paulo</option>
                                 <option value="SE">Sergipe</option>
                                 <option value="TO">Tocantins</option>
                                 <option value="EX">Estrangeiro</option>
@@ -126,7 +166,7 @@ export default function FormCadClientes(props) {
                                 label="CEP:"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cep" name="cep" required/>
+                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cep" name="cep" required value={cliente.cep} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe a CEP</Form.Control.Feedback>
                         </Form.Group>
