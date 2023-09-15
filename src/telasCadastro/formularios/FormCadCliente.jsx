@@ -1,41 +1,50 @@
 import { useState } from "react";
-import { Form, Container, Row, Col, Button,FloatingLabel } from "react-bootstrap";
+import { Form, Container, Row, Col, Button, FloatingLabel } from "react-bootstrap";
 
 export default function FormCadClientes(props) {
     //os atributos deste objeto devem estar associados aos imputs do formulario
-const estadoInicialCliente = {
-        cpf:'',
-        nome:'',
-        endereco:'',
-        numero:'',
-        bairro:'',
-        cidade:'',
-        UF:'SP',
-        cep:''
-}
+    const estadoInicialCliente = props.clienteParaEdicao
 
-    const [cliente,setCliente] = useState(estadoInicialCliente);
+    const [cliente, setCliente] = useState(estadoInicialCliente);
 
     const [formValidado, setFormValidado] = useState(false);
 
-    function manipularMudancas(e){
+    function manipularMudancas(e) {
         const componente = e.currentTarget;
-        setCliente({...cliente,[componente.name]:componente.value});
+        setCliente({ ...cliente, [componente.name]: componente.value });
     }
 
-    function manipularSubmissao(e){
-        const form=e.currentTarget;
-        if(form.checkValidity()){
-           // todos os campos preenchidos
-           // mandar os dados para o backend
-           setCliente(estadoInicialCliente);
-           setFormValidado(false);
+    function manipularSubmissao(e) {
+        const form = e.currentTarget;
+        if (form.checkValidity()) {
+            // todos os campos preenchidos
+            // mandar os dados para o backend
+            if (!props.modoEdicao) {
+                props.setListaClientes([...props.listaClientes, cliente])
+            }
+            else {
+                //alterar os dados do cliente (filtra e adiciona)
+                props.setListaClientes([...props.listaClientes.filter((itemCliente) => itemCliente.cpf !== cliente.cpf), cliente]);
+                props.setModoEdicao(false);
+                props.setClienteParaEdicao({
+                    cpf: '',
+                    nome: '',
+                    endereco: '',
+                    numero: '',
+                    bairro: '',
+                    cidade: '',
+                    UF: 'SP',
+                    cep: ''
+                });
+            }
+            setCliente(estadoInicialCliente);
+            setFormValidado(false);
         }
-        else{
+        else {
             setFormValidado(true);
         }
 
-        
+
 
         e.stopPropagation();
         e.preventDefault();
@@ -52,7 +61,7 @@ const estadoInicialCliente = {
                                 label="CPF"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="000.000.000-00" id="cpf" name="cpf" required value={cliente.cpf} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="000.000.000-00" id="cpf" name="cpf" required value={cliente.cpf} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CPF</Form.Control.Feedback>
                         </Form.Group>
@@ -65,7 +74,7 @@ const estadoInicialCliente = {
                             label="Nome completo"
                             className="mb-3"
                         >
-                            <Form.Control type="text" placeholder="Informe o nome completo" id="nome" name="nome" required value={cliente.nome} onChange={manipularMudancas}/>
+                            <Form.Control type="text" placeholder="Informe o nome completo" id="nome" name="nome" required value={cliente.nome} onChange={manipularMudancas} />
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">Informe o nome completo</Form.Control.Feedback>
                     </Form.Group>
@@ -79,7 +88,7 @@ const estadoInicialCliente = {
                                 label="Endereço"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Avenida/Rua/Alameda/Viela" id="endereco" name="endereco" required value={cliente.endereco} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Avenida/Rua/Alameda/Viela" id="endereco" name="endereco" required value={cliente.endereco} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o endereço</Form.Control.Feedback>
                         </Form.Group>
@@ -91,7 +100,7 @@ const estadoInicialCliente = {
                                 label="Numero"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="N" id="numero" name="numero" required value={cliente.numero} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="N" id="numero" name="numero" required value={cliente.numero} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o numero</Form.Control.Feedback>
                         </Form.Group>
@@ -106,7 +115,7 @@ const estadoInicialCliente = {
                                 label="Bairro"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Bairro" id="bairro" name="bairro" required value={cliente.bairro} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Bairro" id="bairro" name="bairro" required value={cliente.bairro} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o Bairro</Form.Control.Feedback>
                         </Form.Group>
@@ -118,7 +127,7 @@ const estadoInicialCliente = {
                                 label="Cidade"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Cidade" id="cidade" name="cidade" required value={cliente.cidade} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Cidade" id="cidade" name="cidade" required value={cliente.cidade} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe a Cidade</Form.Control.Feedback>
                         </Form.Group>
@@ -166,7 +175,7 @@ const estadoInicialCliente = {
                                 label="CEP:"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cep" name="cep" required value={cliente.cep} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cep" name="cep" required value={cliente.cep} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe a CEP</Form.Control.Feedback>
                         </Form.Group>
@@ -174,12 +183,13 @@ const estadoInicialCliente = {
                 </Row>
                 <Row>
                     <Col md={6} offset={5} className={"flex justify-content-end"}>
-                        <Button type="submit" variant={"primary"}>Cadastrar</Button>
+                        <Button type="submit" variant={"primary"}>{props.modoEdicao ? "Alterar" : "Cadastrar"}</Button>
                     </Col>
                     <Col md={6} offset={5}>
-                        <Button type="button" variant={"secondary"} onClick={()=>{
+                        <Button type="button" variant={"secondary"} onClick={() => {
+
                             props.exibirformulario(false)
-                            }}>Voltar</Button>
+                        }}>Voltar</Button>
                     </Col>
                 </Row>
             </Form>
