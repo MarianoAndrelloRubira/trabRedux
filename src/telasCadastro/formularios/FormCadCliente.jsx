@@ -3,7 +3,18 @@ import { Form, Container, Row, Col, Button, FloatingLabel } from "react-bootstra
 
 export default function FormCadClientes(props) {
     //os atributos deste objeto devem estar associados aos imputs do formulario
-    const estadoInicialCliente = props.clienteParaEdicao
+    const estadoInicialCliente = props.clienteParaEdicao;
+
+    const clienteVazio = {
+        cpf: '',
+        nome: '',
+        endereco: '',
+        numero: '',
+        bairro: '',
+        cidade: '',
+        UF: 'SP',
+        cep: ''
+    };
 
     const [cliente, setCliente] = useState(estadoInicialCliente);
 
@@ -20,24 +31,16 @@ export default function FormCadClientes(props) {
             // todos os campos preenchidos
             // mandar os dados para o backend
             if (!props.modoEdicao) {
-                props.setListaClientes([...props.listaClientes, cliente])
+                props.setListaClientes([...props.listaClientes, cliente]);
+                
             }
             else {
                 //alterar os dados do cliente (filtra e adiciona)
                 props.setListaClientes([...props.listaClientes.filter((itemCliente) => itemCliente.cpf !== cliente.cpf), cliente]);
                 props.setModoEdicao(false);
-                props.setClienteParaEdicao({
-                    cpf: '',
-                    nome: '',
-                    endereco: '',
-                    numero: '',
-                    bairro: '',
-                    cidade: '',
-                    UF: 'SP',
-                    cep: ''
-                });
+                props.setClienteParaEdicao(clienteVazio);
             }
-            setCliente(estadoInicialCliente);
+            setCliente(clienteVazio);//ou sair da tela de formúlario
             setFormValidado(false);
         }
         else {
