@@ -8,8 +8,8 @@ export default function TabelaClientes(props) {
             );
         }
     }
-    function editarCliente(cliente){
-        
+    function editarCliente(cliente) {
+
     }
     console.log(props.lista);
     return (
