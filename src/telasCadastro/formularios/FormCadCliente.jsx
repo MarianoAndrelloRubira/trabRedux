@@ -32,6 +32,9 @@ export default function FormCadClientes(props) {
             // mandar os dados para o backend
             if (!props.modoEdicao) {
                 props.setListaClientes([...props.listaClientes, cliente]);
+                props.setMensagem('Cliente incluido com sucesso');
+                props.setTipoMensagem('success');
+                props.setMostrarMensagem(true);
                 
             }
             else {
