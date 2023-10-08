@@ -31,11 +31,18 @@ export default function FormCadClientes(props) {
             // todos os campos preenchidos
             // mandar os dados para o backend
             if (!props.modoEdicao) {
-                props.setListaClientes([...props.listaClientes, cliente]);
-                props.setMensagem('Cliente incluido com sucesso');
-                props.setTipoMensagem('success');
-                props.setMostrarMensagem(true);
-                
+                if (props.listaClientes.find((cli) => cli.cpf === cliente.cpf) === undefined) {
+                    props.setListaClientes([...props.listaClientes, cliente]);
+                    props.setMensagem('Cliente incluido com sucesso');
+                    props.setTipoMensagem('success');
+                    props.setMostrarMensagem(true);
+                }
+                else{
+                    props.setMensagem('Cliente ja cadastrado');
+                    props.setTipoMensagem('warning');
+                    props.setMostrarMensagem(true);
+                }
+
             }
             else {
                 //alterar os dados do cliente (filtra e adiciona)

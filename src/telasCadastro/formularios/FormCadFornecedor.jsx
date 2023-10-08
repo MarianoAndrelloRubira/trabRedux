@@ -16,22 +16,28 @@ export default function FormCadFornecedor(props) {
 
     const [fornecedor, setFornecedor] = useState(estadoInicialFornecedor);
 
-    const [formValidado,setFormValidado] = useState(false);
+    const [formValidado, setFormValidado] = useState(false);
 
-    function manipularMudancas(e){
+    function manipularMudancas(e) {
         const component = e.currentTarget;
-        setFornecedor({...fornecedor,[component.name]:component.value});
+        setFornecedor({ ...fornecedor, [component.name]: component.value });
     }
 
     function manipularSubmissao(e) {
         const form = e.currentTarget;
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
-                props.setListaFornecedor([...props.listaFornecedor, fornecedor]);
-                props.setMensagem('Fornecedor incluido com sucesso');
-                props.setTipoMensage('success');
-                props.setMostrarMensagem(true);
-                
+                if (props.listaFornecedor.find((forn) => forn.cnpj === fornecedor.cnpj) === undefined) {
+                    props.setListaFornecedor([...props.listaFornecedor, fornecedor]);
+                    props.setMensagem('Fornecedor incluido com sucesso');
+                    props.setTipoMensage('success');
+                    props.setMostrarMensagem(true);
+                } else {
+                    props.setMensagem('Fornecedor ja cadastrado');
+                    props.setTipoMensage('warning');
+                    props.setMostrarMensagem(true);
+                }
+
             }
             else {
                 props.setListaFornecedor([...props.listaFornecedor.filter((itemFornecedor) => itemFornecedor.cnpj !== fornecedor.cnpj), fornecedor]);
@@ -59,7 +65,7 @@ export default function FormCadFornecedor(props) {
                                 label="CNPJ"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="XX. XXX. XXX/0001-XX" id="cnpj" name="cnpj" required value={fornecedor.cnpj} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="XX. XXX. XXX/0001-XX" id="cnpj" name="cnpj" required value={fornecedor.cnpj} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CNPJ</Form.Control.Feedback>
                         </Form.Group>
@@ -71,7 +77,7 @@ export default function FormCadFornecedor(props) {
                                 label="Telefone"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="(XX) XXXXX-XXXX" id="telefone" name="telefone" required value={fornecedor.telefone} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="(XX) XXXXX-XXXX" id="telefone" name="telefone" required value={fornecedor.telefone} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CNPJ</Form.Control.Feedback>
                         </Form.Group>
@@ -85,7 +91,7 @@ export default function FormCadFornecedor(props) {
                                 label="Nome do Fornecdor"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Informe o nome completo" id="nomeForn" name="nomeForn" required value={fornecedor.nomeForn} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Informe o nome completo" id="nomeForn" name="nomeForn" required value={fornecedor.nomeForn} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o nome do fornecedor</Form.Control.Feedback>
                         </Form.Group>
@@ -99,7 +105,7 @@ export default function FormCadFornecedor(props) {
                                 label="Email"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="informe o email do fornecedor" id="email" name="email" required value={fornecedor.email} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="informe o email do fornecedor" id="email" name="email" required value={fornecedor.email} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o email do fornecedor</Form.Control.Feedback>
                         </Form.Group>
@@ -113,7 +119,7 @@ export default function FormCadFornecedor(props) {
                                 label="Cidade"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Cidade" id="cidadeForn" name="cidadeForn" required value={fornecedor.cidadeForn} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Cidade" id="cidadeForn" name="cidadeForn" required value={fornecedor.cidadeForn} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe a Cidade</Form.Control.Feedback>
                         </Form.Group>
@@ -161,7 +167,7 @@ export default function FormCadFornecedor(props) {
                                 label="CEP:"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cepForn" name="cepForn" required value={fornecedor.cepForn} onChange={manipularMudancas}/>
+                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cepForn" name="cepForn" required value={fornecedor.cepForn} onChange={manipularMudancas} />
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CEP</Form.Control.Feedback>
                         </Form.Group>
@@ -169,10 +175,10 @@ export default function FormCadFornecedor(props) {
                 </Row>
                 <Row>
                     <Col md={6} offset={5} className={"flex justify-content-end"}>
-                        <Button type="submit" variant={"primary"}>Cadastrar</Button>
+                        <Button type="submit" variant={"primary"}>{props.modoEdicao ? "Alterar" : "Cadastrar"}</Button>
                     </Col>
                     <Col md={6} offset={5}>
-                        <Button type="button" variant={"secondary"}onClick={()=>{props.exibirformulario(false)}}>Voltar</Button>
+                        <Button type="button" variant={"secondary"} onClick={() => { props.exibirformulario(false) }}>Voltar</Button>
                     </Col>
                 </Row>
             </Form>
