@@ -31,6 +31,7 @@ export default function TabelaFornecedor(props) {
                 <tbody>
                     {props.listaFornecedor.map((fornecedor)=>{return(
                         <tr key={fornecedor.cnpj}>
+                            <td>{fornecedor.cnpj}</td>
                             <td>{fornecedor.telefone}</td>
                             <td>{fornecedor.nomeForn}</td>
                             <td>{fornecedor.email}</td>

@@ -29,7 +29,7 @@ export default function FormCadFornecedor(props) {
             if (!props.modoEdicao) {
                 props.setListaFornecedor([...props.listaFornecedor, fornecedor]);
                 props.setMensagem('Fornecedor incluido com sucesso');
-                props.setTipoMensagem('success');
+                props.setTipoMensage('success');
                 props.setMostrarMensagem(true);
                 
             }
@@ -172,7 +172,7 @@ export default function FormCadFornecedor(props) {
                         <Button type="submit" variant={"primary"}>Cadastrar</Button>
                     </Col>
                     <Col md={6} offset={5}>
-                        <Button type="button" variant={"secondary"}>Voltar</Button>
+                        <Button type="button" variant={"secondary"}onClick={()=>{props.exibirformulario(false)}}>Voltar</Button>
                     </Col>
                 </Row>
             </Form>
