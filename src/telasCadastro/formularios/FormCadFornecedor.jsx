@@ -27,7 +27,7 @@ export default function FormCadFornecedor(props) {
         const form = e.currentTarget;
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
-                props.setListaFornecedor([...props.listaClientes, cliente]);
+                props.setListaFornecedor([...props.listaFornecedor, fornecedor]);
                 props.setMensagem('Fornecedor incluido com sucesso');
                 props.setTipoMensagem('success');
                 props.setMostrarMensagem(true);

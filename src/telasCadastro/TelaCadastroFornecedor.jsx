@@ -8,7 +8,7 @@ import TelaMensagem from "./TelaMensagem";
 
 
 export default function TelaCadastroFornecedor(props) {
-    const [exibirformulario, setExibirFormulario] = useState(false);
+    const [exibirformulario, setExibirFormulario] = useState(true);
     const [listaFornecedor, setListaFornecedor] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState("");
