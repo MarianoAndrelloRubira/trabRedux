@@ -49,9 +49,6 @@ export default function FormCadClientes(props) {
         else {
             setFormValidado(true);
         }
-
-
-
         e.stopPropagation();
         e.preventDefault();
     }

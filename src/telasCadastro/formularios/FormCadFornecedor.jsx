@@ -1,9 +1,56 @@
+import { useState } from "react";
 import { Form, Container, Row, Col, Button, FloatingLabel } from "react-bootstrap";
 
 export default function FormCadFornecedor(props) {
+    const estadoInicialFornecedor = props.fornecedorParaEdicao;
+
+    const fornecedorVazio = {
+        cnpj: '',
+        telefone: '',
+        nomeForn: '',
+        email: '',
+        cidadeForn: '',
+        UF: 'SP',
+        cepForn: ''
+    }
+
+    const [fornecedor, setFornecedor] = useState(estadoInicialFornecedor);
+
+    const [formValidado,setFormValidado] = useState(false);
+
+    function manipularMudancas(e){
+        const component = e.currentTarget;
+        setFornecedor({...fornecedor,[component.name]:component.value});
+    }
+
+    function manipularSubmissao(e) {
+        const form = e.currentTarget;
+        if (form.checkValidity()) {
+            if (!props.modoEdicao) {
+                props.setListaFornecedor([...props.listaClientes, cliente]);
+                props.setMensagem('Fornecedor incluido com sucesso');
+                props.setTipoMensagem('success');
+                props.setMostrarMensagem(true);
+                
+            }
+            else {
+                props.setListaFornecedor([...props.listaFornecedor.filter((itemFornecedor) => itemFornecedor.cnpj !== fornecedor.cnpj), fornecedor]);
+                props.setModoEdicao(false);
+                props.setFornecedorParaEdicao(fornecedorVazio);
+            }
+            setFornecedor(fornecedorVazio);
+            setFormValidado(false);
+        }
+        else {
+            setFormValidado(true);
+        }
+
+        e.stopPropagation();
+        e.preventDefault();
+    }
     return (
         <Container>
-            <Form>
+            <Form noValidate validated={formValidado} onSubmit={manipularSubmissao}>
                 <Row>
                     <Col md={5}>
                         <Form.Group>
@@ -12,7 +59,7 @@ export default function FormCadFornecedor(props) {
                                 label="CNPJ"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="XX. XXX. XXX/0001-XX" id="cnpj" name="cnpj" required />
+                                <Form.Control type="text" placeholder="XX. XXX. XXX/0001-XX" id="cnpj" name="cnpj" required value={fornecedor.cnpj} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CNPJ</Form.Control.Feedback>
                         </Form.Group>
@@ -24,7 +71,7 @@ export default function FormCadFornecedor(props) {
                                 label="Telefone"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="(XX) XXXXX-XXXX" id="telefone" name="telefone" required />
+                                <Form.Control type="text" placeholder="(XX) XXXXX-XXXX" id="telefone" name="telefone" required value={fornecedor.telefone} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CNPJ</Form.Control.Feedback>
                         </Form.Group>
@@ -38,7 +85,7 @@ export default function FormCadFornecedor(props) {
                                 label="Nome do Fornecdor"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Informe o nome completo" id="nomeForn" name="nomeForn" required />
+                                <Form.Control type="text" placeholder="Informe o nome completo" id="nomeForn" name="nomeForn" required value={fornecedor.nomeForn} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o nome do fornecedor</Form.Control.Feedback>
                         </Form.Group>
@@ -52,7 +99,7 @@ export default function FormCadFornecedor(props) {
                                 label="Email"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="informe o email do fornecedor" id="email" name="email" required />
+                                <Form.Control type="text" placeholder="informe o email do fornecedor" id="email" name="email" required value={fornecedor.email} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o email do fornecedor</Form.Control.Feedback>
                         </Form.Group>
@@ -66,14 +113,15 @@ export default function FormCadFornecedor(props) {
                                 label="Cidade"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Cidade" id="cidadeForn" name="cidadeForn" />
+                                <Form.Control type="text" placeholder="Cidade" id="cidadeForn" name="cidadeForn" required value={fornecedor.cidadeForn} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe a Cidade</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                     <Col md={3}>
                         <FloatingLabel controlId="floatingSelect" label="UF:">
-                            <Form.Select aria-label="Unidades federativas">
+                            <Form.Select aria-label="Unidades federativas" id="UF" name="UF" value={fornecedor.UF} onChange={manipularMudancas}>
+                                <option value="SP" selected>São Paulo</option>
                                 <option value="AC">Acre</option>
                                 <option value="AL">Alagoas</option>
                                 <option value="AP">Amapá</option>
@@ -98,7 +146,6 @@ export default function FormCadFornecedor(props) {
                                 <option value="RO">Rondônia</option>
                                 <option value="RR">Roraima</option>
                                 <option value="SC">Santa Catarina</option>
-                                <option value="SP" selected>São Paulo</option>
                                 <option value="SE">Sergipe</option>
                                 <option value="TO">Tocantins</option>
                                 <option value="EX">Estrangeiro</option>
@@ -114,7 +161,7 @@ export default function FormCadFornecedor(props) {
                                 label="CEP:"
                                 className="mb-3"
                             >
-                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cepForn" name="cepForn" required />
+                                <Form.Control type="text" placeholder="Bairro/Vila..." id="cepForn" name="cepForn" required value={fornecedor.cepForn} onChange={manipularMudancas}/>
                             </FloatingLabel>
                             <Form.Control.Feedback type="invalid">Informe o CEP</Form.Control.Feedback>
                         </Form.Group>

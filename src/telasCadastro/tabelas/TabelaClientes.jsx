@@ -13,7 +13,6 @@ export default function TabelaClientes(props) {
         props.setModoEdicao(true);
         props.exibirformulario(true);
     }
-
     console.log(props.lista);
     return (
         <Container>
