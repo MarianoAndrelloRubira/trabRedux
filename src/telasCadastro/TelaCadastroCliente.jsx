@@ -7,7 +7,6 @@ import TabelaClientes from "./tabelas/TabelaClientes";
 import TelaMensagem from "./TelaMensagem";
 import { Container } from "react-bootstrap";
 
-
 export default function TelaCadastroCliente(props) {
     const [exibirformulario, setExibirFormulario] = useState(true);
     const [listaClientes, setListaClientes] = useState([]);
