@@ -7,9 +7,12 @@ import TelaMenu from "./telasCadastro/TelaMenu";
 import Tela404 from "./telasCadastro/Tela404";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import store from "./redux/store";
+import { Provider } from "react-redux";
 
 function App() {
   return (
+    <Provider store={store}>
     <div>
       <BrowserRouter>
         <Routes>
@@ -26,6 +29,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </Provider>
   );
 }
 
