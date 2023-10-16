@@ -1,11 +1,8 @@
 import { useState } from "react";
 import Pagina from "../templates/Pagina";
 import FormCadClientes from "./formularios/FormCadCliente";
-
-
 import TabelaClientes from "./tabelas/TabelaClientes";
 import TelaMensagem from "./TelaMensagem";
-import { Container } from "react-bootstrap";
 
 export default function TelaCadastroCliente(props) {
     const [exibirformulario, setExibirFormulario] = useState(true);
@@ -36,8 +33,6 @@ export default function TelaCadastroCliente(props) {
 
                         //dinamica em que o usuario ira alternar entre o formulario e a visualização do registros ja cadastrados
                         exibirformulario ? <FormCadClientes exibirformulario={setExibirFormulario}
-                            listaClientes={listaClientes}
-                            setListaClientes={setListaClientes}
                             clienteParaEdicao={clienteParaEdicao}
                             setClienteParaEdicao={setClienteParaEdicao}
                             modoEdicao={modoEdicao}
@@ -47,8 +42,6 @@ export default function TelaCadastroCliente(props) {
                             setTipoMensagem={setTipoMensagem} />
                             :
                             <TabelaClientes exibirformulario={setExibirFormulario}
-                                listaClientes={listaClientes}
-                                setListaClientes={setListaClientes}
                                 clienteParaEdicao={clienteParaEdicao}
                                 setClienteParaEdicao={setClienteParaEdicao}
                                 modoEdicao={modoEdicao}
