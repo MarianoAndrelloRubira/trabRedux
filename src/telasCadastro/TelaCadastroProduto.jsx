@@ -10,7 +10,7 @@ import TelaMensagem from "./TelaMensagem";
 
 export default function TelaCadastroProduto(props) {
     const [exibirformulario, setExibirFormulario] = useState(true);
-    const [listaProdutos, setListaProdutos] = useState([]);
+    //const [listaProdutos, setListaProdutos] = useState([]);
     const [mostrarMensagem, setMostrarMensagem] = useState(false);
     const [mensagem, setMensagem] = useState("");
     const [tipoMensagem, setTipoMensagem] = useState("");
@@ -34,8 +34,6 @@ export default function TelaCadastroProduto(props) {
                 {
                     //dinamica em que o usuario ira alternar entre o formulario e a visualização do registros ja cadastrados
                     exibirformulario ? <FormCadProdutos exibirformulario={setExibirFormulario}
-                        listaProdutos={listaProdutos}
-                        setListaProdutos={setListaProdutos}
                         produtoParaEdicao={produtoParaEdicao}
                         setProdutoParaEdicao={setProdutoParaEdicao}
                         modoEdicao={modoEdicao}
@@ -44,8 +42,6 @@ export default function TelaCadastroProduto(props) {
                         setMensagem={setMensagem}
                         setTipoMensagem={setTipoMensagem} /> :
                         <TabelaProdutos exibirformulario={setExibirFormulario}
-                            listaProdutos={listaProdutos}
-                            setListaProdutos={setListaProdutos}
                             produtoParaEdicao={produtoParaEdicao}
                             setProdutoParaEdicao={setProdutoParaEdicao}
                             modoEdicao={modoEdicao}

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Form, Container, Row, Col, Button, FloatingLabel } from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
+import {adicionar,atualizar} from "../../redux/produtoReducer"
 
 export default function FormCadProdutos(props) {
     const estadoInicialPorduto = props.produtoParaEdicao;
@@ -13,8 +15,9 @@ export default function FormCadProdutos(props) {
         cate: ''
     }
     const [produto, setProduto] = useState(estadoInicialPorduto);
-
     const [formValidado, setFormValidado] = useState(false);
+    const {status,msgProduto,listaProdutos}=useSelector(state=>state.produto);
+    const dispatch = useDispatch();
 
     function manipularMudancas(e) {
         const componente = e.currentTarget;
@@ -28,8 +31,9 @@ export default function FormCadProdutos(props) {
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
                 if (produto.precLot == produto.qtd * produto.precInd) {
-                    if (props.listaProdutos.find((prod) => prod.cod === produto.cod) === undefined) {
-                        props.setListaProdutos([...props.listaProdutos, produto]);
+                    if (listaProdutos.find((prod) => prod.cod === produto.cod) === undefined) {
+                       // props.setListaProdutos([...props.listaProdutos, produto]);
+                       dispatch(adicionar(produto));
                         props.setMensagem('Produto incluido com sucesso');
                         props.setTipoMensagem('success');
                         props.setMostrarMensagem(true);
@@ -38,20 +42,26 @@ export default function FormCadProdutos(props) {
                         props.setMensagem('Produto ja cadastrado');
                         props.setTipoMensagem('warning');
                         props.setMostrarMensagem(true);
+                        props.setProdutoParaEdicao(produto);
                     }
                 }
                 else
                 {
                     props.setMensagem('Valor do lote está incoreto');
                     props.setTipoMensagem('warning');
-                    props.setMostrarMensagem(true); 
+                    props.setMostrarMensagem(true);
+                    props.setProdutoParaEdicao(produto);
                 }
 
             }
             else {
-                props.setListaProdutos([...props.listaProdutos.filter((itemProduto) => itemProduto.cod !== produto.cod), produto]);
+                //props.setListaProdutos([...props.listaProdutos.filter((itemProduto) => itemProduto.cod !== produto.cod), produto]);
+                dispatch(atualizar(produto));
                 props.setModoEdicao(false);
                 props.setProdutoParaEdicao(produtoVazio);
+                props.setMensagem('Produto atualizado com sucesso');
+                props.setTipoMensagem('success');
+                props.setMostrarMensagem(true);
             }
             setProduto(produtoVazio);
             setFormValidado(false);

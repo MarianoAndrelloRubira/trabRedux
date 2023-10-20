@@ -43,13 +43,14 @@ export default function FormCadClientes(props) {
                     props.setMensagem('Cliente ja cadastrado');
                     props.setTipoMensagem('warning');
                     props.setMostrarMensagem(true);
+                    props.setClienteParaEdicao(cliente);
                 }
 
             }
             else {
                 //alterar os dados do cliente (filtra e adiciona)
                 //props.setListaClientes([...props.listaClientes.filter((itemCliente) => itemCliente.cpf !== cliente.cpf), cliente]);
-                dispatch(atualizar(cliente))
+                dispatch(atualizar(cliente));
                 props.setModoEdicao(false);
                 props.setClienteParaEdicao(clienteVazio);
                 props.setMensagem('Cliente atualizado com sucesso');

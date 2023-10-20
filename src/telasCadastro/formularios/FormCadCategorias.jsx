@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Form, Container, Row, Col, Button, FloatingLabel } from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
+import {adicionar,atualizar} from "../../redux/categoriaReducer"
 
 export default function FormCadCategorias(props) {
     const estadoInicialCategoria = props.categoriaParaEdicao;
@@ -10,8 +12,9 @@ export default function FormCadCategorias(props) {
     };
 
     const [categoria, setCategoria] = useState(estadoInicialCategoria);
-
     const [formValidado, setFormValidado] = useState(false);
+    const {status,msgCategoria,listaCategorias}=useSelector(state=>state.categoria);
+    const dispatch = useDispatch();
 
     function manipularMudancas(e) {
         const componente = e.currentTarget;
@@ -22,8 +25,9 @@ export default function FormCadCategorias(props) {
         const form = e.currentTarget;
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
-                if (props.listaCategoria.find((cat) => cat.codCat === categoria.codCat) === undefined) {
-                    props.setListaCategoria([...props.listaCategoria, categoria]);
+                if (listaCategorias.find((cat) => cat.codCat === categoria.codCat) === undefined) {
+                    //props.setListaCategoria([...props.listaCategoria, categoria]);
+                    dispatch(adicionar(categoria));
                     props.setMensagem('Categoria incluido com sucesso');
                     props.setTipoMensagem('success');
                     props.setMostrarMensagem(true);
@@ -32,13 +36,18 @@ export default function FormCadCategorias(props) {
                     props.setMensagem('Categoria ja cadastrada');
                     props.setTipoMensagem('warning');
                     props.setMostrarMensagem(true);
+                    props.setCategoriaParaEdicao(categoria);
                 }
 
             }
             else {
-                props.setListaCategoria([...props.listaCategoria.filter((itemCategoria) => itemCategoria.codCat !== categoria.codCat), categoria]);
+                //props.setListaCategoria([...props.listaCategoria.filter((itemCategoria) => itemCategoria.codCat !== categoria.codCat), categoria]);
+                dispatch(atualizar(categoria));
                 props.setModoEdicao(false);
                 props.setCategoriaParaEdicao(categoriaVazia);
+                props.setMensagem('Categoria atualizada com sucesso');
+                    props.setTipoMensagem('success');
+                    props.setMostrarMensagem(true);
             }
             setCategoria(categoriaVazia);
             setFormValidado(false);

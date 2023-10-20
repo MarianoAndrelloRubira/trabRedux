@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Form, Container, Row, Col, Button, FloatingLabel } from "react-bootstrap";
+import {useSelector,useDispatch} from "react-redux";
+import {adicionar,atualizar} from "../../redux/fornecedorReducer"
 
 export default function FormCadFornecedor(props) {
     const estadoInicialFornecedor = props.fornecedorParaEdicao;
-
     const fornecedorVazio = {
         cnpj: '',
         telefone: '',
@@ -15,8 +16,9 @@ export default function FormCadFornecedor(props) {
     }
 
     const [fornecedor, setFornecedor] = useState(estadoInicialFornecedor);
-
+    const {status,msgfornecedor,listaFornecedor}=useSelector(state=>state.fornecedor);
     const [formValidado, setFormValidado] = useState(false);
+    const dispatch = useDispatch();
 
     function manipularMudancas(e) {
         const component = e.currentTarget;
@@ -27,8 +29,9 @@ export default function FormCadFornecedor(props) {
         const form = e.currentTarget;
         if (form.checkValidity()) {
             if (!props.modoEdicao) {
-                if (props.listaFornecedor.find((forn) => forn.cnpj === fornecedor.cnpj) === undefined) {
-                    props.setListaFornecedor([...props.listaFornecedor, fornecedor]);
+                if (listaFornecedor.find((forn) => forn.cnpj === fornecedor.cnpj) === undefined) {
+                    //props.setListaFornecedor([...props.listaFornecedor, fornecedor]);
+                    dispatch(adicionar(fornecedor));
                     props.setMensagem('Fornecedor incluido com sucesso');
                     props.setTipoMensage('success');
                     props.setMostrarMensagem(true);
@@ -36,13 +39,18 @@ export default function FormCadFornecedor(props) {
                     props.setMensagem('Fornecedor ja cadastrado');
                     props.setTipoMensage('warning');
                     props.setMostrarMensagem(true);
+                    props.setFornecedorParaEdicao(fornecedor);
                 }
 
             }
             else {
-                props.setListaFornecedor([...props.listaFornecedor.filter((itemFornecedor) => itemFornecedor.cnpj !== fornecedor.cnpj), fornecedor]);
+                //props.setListaFornecedor([...props.listaFornecedor.filter((itemFornecedor) => itemFornecedor.cnpj !== fornecedor.cnpj), fornecedor]);
+                dispatch(atualizar(fornecedor));
                 props.setModoEdicao(false);
                 props.setFornecedorParaEdicao(fornecedorVazio);
+                props.setMensagem('Fornecedor atualizado com sucesso');
+                props.setTipoMensage('success');
+                props.setMostrarMensagem(true);
             }
             setFornecedor(fornecedorVazio);
             setFormValidado(false);

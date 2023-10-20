@@ -1,11 +1,16 @@
 import { Button, Container, Table } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { remover } from "../../redux/categoriaReducer";
 
 export default function TabelaCategorias(props) {
+    const { status, mensagem, listaCategorias} = useSelector(state => state.categoria);
+    const dispatch = useDispatch();
     function excluirCategoria(categoria) {
         if (window.confirm('Deseja realmente excluir essa categoria?')) {
-            props.setListaCategoria(
-                props.listaCategoria.filter((itemLista => itemLista.codCat !== categoria.codCat))
-            );
+            dispatch(remover(categoria));
+           // props.setListaCategoria(
+            //   props.listaCategoria.filter((itemLista => itemLista.codCat !== categoria.codCat))
+            //);
         }
     }
     function editarCategoria(categoria) {
@@ -27,7 +32,7 @@ export default function TabelaCategorias(props) {
                     </tr>
                 </thead>
                 <tbody>
-                {props.listaCategoria.map((categoria) => {
+                {listaCategorias.map((categoria) => {
                         return (<tr key={categoria.codCat}>
                             <td>{categoria.codCat}</td>
                             <td>{categoria.desCat}</td>
